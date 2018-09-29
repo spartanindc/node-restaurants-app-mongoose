@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 // this module
 const expect = chai.expect;
 
-const {Restaurant} = require('../models');
+const { Restaurant } = require('../models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
@@ -109,22 +109,13 @@ describe('Restaurants API resource', function() {
   describe('GET endpoint', function() {
 
     it('should return all existing restaurants', function() {
-      // strategy:
-      //    1. get back all restaurants returned by by GET request to `/restaurants`
-      //    2. prove res has right status, data type
-      //    3. prove the number of restaurants we got back is equal to number
-      //       in db.
-      //
-      // need to have access to mutate and access `res` across
-      // `.then()` calls below, so declare it here so can modify in place
+
       let res;
       return chai.request(app)
         .get('/restaurants')
         .then(function(_res) {
-          // so subsequent .then blocks can access response object
           res = _res;
           expect(res).to.have.status(200);
-          // otherwise our db seeding didn't work
           expect(res.body.restaurants).to.have.lengthOf.at.least(1);
           return Restaurant.count();
         })
