@@ -1,7 +1,7 @@
 "use strict";
 
-const express = require("express");
-const mongoose = require("mongoose");
+const express = require('express');
+const mongoose = require('mongoose');
 
 // Mongoose internally uses a promise-like object,
 // but its better to make Mongoose use built in es6 promises
@@ -23,7 +23,7 @@ app.get("/restaurants", (req, res) => {
     .limit(10)
     // success callback: for each restaurant we got back, we'll
     // call the `.serialize` instance method we've created in
-    // models.js in order to only expose the data we want the API return.    
+    // models.js in order to only expose the data we want the API return.
     .then(restaurants => {
       res.json({
         restaurants: restaurants.map(restaurant => restaurant.serialize())
@@ -120,22 +120,11 @@ let server;
 
 // this function connects to our database, then starts the server
 function runServer(databaseUrl, port = PORT) {
+
   return new Promise((resolve, reject) => {
-    mongoose.connect(
-      databaseUrl,
-      err => {
-        if (err) {
-          return reject(err);
-        }
-        server = app
-          .listen(port, () => {
-            console.log(`Your app is listening on port ${port}`);
-            resolve();
-          })
-          .on("error", err => {
-            mongoose.disconnect();
-            reject(err);
-          });
+    mongoose.connect(databaseUrl, err => {
+      if (err) {
+        return reject(err);
       }
     );
   });
